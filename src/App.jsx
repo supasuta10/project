@@ -7,6 +7,10 @@ import Contact from './Pages/Contact';
 // import Notfound from './Pages/Notfound';
 import FoodDetail from './Pages/FoodDetail';
 import Date from './Pages/Date';
+import SearchMenu from './Pages/SearchMenu';
+import MenuSelection from './Pages/MenuSelection';
+import Detail from './Pages/Detail';
+import History from './Pages/History';
 
 const App = () => {
   return (
@@ -18,6 +22,10 @@ const App = () => {
         <Route path="/contact" element={<Contact/>} />
         {/* <Route path="*" element={<Notfound/>} /> */}
         <Route path="/food/:id" element={<FoodDetail/>} />
+        <Route path="/search-menu" element={<SearchMenu />} />
+        <Route path="/MenuSelection" element={<MenuSelection />} />
+        <Route path="/Detail" element={<Detail />} />
+        <Route path="/History" element={<History />}/>
       </Routes>
     </BrowserRouter>
   )
