@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../Template/Layout';
 import FoodMenuCard from './../Components/FoodMenuCard';
+import Swal from 'sweetalert2'; // นำเข้า SweetAlert2
+import { useLocation } from "react-router-dom"; // ✅ เพิ่ม useLocation
 
 const menuItems = [
   { name: "ทะเลนึ่งซีฟู้ด", menuPrice: 2000, description: "ทะเล" },
@@ -16,13 +18,16 @@ const SelectMenu = () => {
   const [selectedMenu, setSelectedMenu] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { bookingDate } = location.state || { bookingDate: "" }; // ✅ รับวันที่จากหน้า DateSelection
+
 
   const toggleSelection = (menuItem) => {
     setSelectedMenu((prevSelected) => {
       if (prevSelected.includes(menuItem)) {
         const newSelection = prevSelected.filter(item => item !== menuItem);
         if (newSelection.length === 0) {
-          setSelectedPrice(null); // รีเซ็ตราคาเมื่อไม่มีเมนูที่เลือก
+          setSelectedPrice(null);
         }
         return newSelection;
       } else {
@@ -30,7 +35,13 @@ const SelectMenu = () => {
           setSelectedPrice(menuItem.menuPrice);
           return [...prevSelected, menuItem];
         } else {
-          alert("กรุณาเลือกเมนูที่มีราคาเดียวกันเท่านั้น");
+          Swal.fire({
+            title: "แจ้งเตือน!",
+            text: "กรุณาเลือกเมนูที่มีราคาเดียวกันเท่านั้น",
+            icon: "warning",
+            confirmButtonText: "ตกลง",
+            showCloseButton: true, // ✅ เพิ่มปุ่มปิด (X)
+          });
           return prevSelected;
         }
       }
@@ -38,7 +49,38 @@ const SelectMenu = () => {
   };
 
   const confirmSelection = () => {
-    navigate('/Detail', { state: { selectedMenu } });
+    if (selectedMenu.length === 0) {
+      Swal.fire({
+        title: "แจ้งเตือน",
+        text: "กรุณาเลือกเมนูก่อน",
+        icon: "warning",
+        confirmButtonText: "ตกลง",
+        showCloseButton: true, // ✅ เพิ่มปุ่มปิด (X)
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: "ยืนยันการเลือกเมนู?",
+      text: "คุณต้องการเลือกเมนูเหล่านี้ใช่หรือไม่?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      showCloseButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "สำเร็จ!",
+          text: "เมนูของคุณถูกเลือกเรียบร้อย",
+          icon: "success",
+          confirmButtonText: "ตกลง",
+          showCloseButton: true,
+        }).then(() => {
+          navigate("/Detail", { state: { selectedMenu, bookingDate } }); // ✅ ส่งวันที่ไปด้วย
+        });
+      }
+    });    
   };
 
   const cancelSelection = () => {

@@ -1,10 +1,16 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../Template/Layout';
 
 const History = () => {
-  const location = useLocation();
-  const { bookingHistory } = location.state || { bookingHistory: [] };
+  const navigate = useNavigate();
+  const [bookingHistory, setBookingHistory] = useState([]);
+
+  useEffect(() => {
+    // ดึงข้อมูลจาก localStorage เมื่อโหลดหน้า History
+    const savedBookings = JSON.parse(localStorage.getItem("bookingHistory")) || [];
+    setBookingHistory(savedBookings);
+  }, []);
 
   return (
     <Layout>

@@ -1,4 +1,4 @@
-use("11-supasuta");
+// use("11-supasuta");
 
 // db.foodmenu.insertMany([
 //     {name: "ข้าวเกรียบกุ้ง", price: 0, description: "ข้าวเกรียบกุ้งทอดร้อนๆ 1 จาน"},
@@ -24,4 +24,4 @@ use("11-supasuta");
 
 // db.foodmenu.deleteMany({ price: { $gt: 150 } });
 
-db.foodmenu.find({ price: {$lte: 100}});
+// db.foodmenu.find({ price: {$lte: 100}});

@@ -20,8 +20,13 @@ function Navbar() {
             </NavLink>
           </li>
           <li>
-            <NavLink className="text-white hover:text-[#C8EAD1]" to="/food">
+            <NavLink className="text-white hover:text-[#C8EAD1]" to="/FoodMenu">
               รายการอาหาร
+            </NavLink>
+          </li>
+          <li>
+            <NavLink className="text-white hover:text-[#C8EAD1]" to="/History">
+              ประวัติจองงาน
             </NavLink>
           </li>
           <li>
